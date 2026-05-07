@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Thêm thuốc</title>
+</head>
+<body>
+<h1>Thêm thuốc mới</h1>
+<form th:action="@{/admin/medicines/add}" th:object="${medicineRequest}" method="post">
+    <p>Tên thuốc: <input type="text" th:field="*{name}"/> <span th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></span></p>
+    <p>Mô tả: <input type="text" th:field="*{description}"/> <span th:if="${#fields.hasErrors('description')}" th:errors="*{description}"></span></p>
+    <p>Số lượng: <input type="number" th:field="*{stockQuantity}"/> <span th:if="${#fields.hasErrors('stockQuantity')}" th:errors="*{stockQuantity}"></span></p>
+    <p>Đơn vị: <input type="text" th:field="*{unit}"/> <span th:if="${#fields.hasErrors('unit')}" th:errors="*{unit}"></span></p>
+    <p>Giá: <input type="number" step="0.01" th:field="*{price}"/> <span th:if="${#fields.hasErrors('price')}" th:errors="*{price}"></span></p>
+    <button type="submit">Lưu</button>
+</form>
+<a th:href="@{/admin/medicines}">Quay lại danh sách</a>
+</body>
+</html>

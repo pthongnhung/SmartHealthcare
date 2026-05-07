@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title>Trang chủ Bác sĩ – Smart Healthcare Platform</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=DM+Serif+Display:ital@0;1&display=swap');
+
+        :root {
+            --teal-700: #0f766e;
+            --teal-600: #0d9488;
+            --teal-500: #14b8a6;
+            --teal-50:  #f0fdfa;
+            --gray-800: #1e293b;
+            --gray-600: #475569;
+            --white: #ffffff;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background: linear-gradient(135deg, #f0fdfa 0%, #e0f2fe 100%);
+            min-height: 100vh;
+            color: var(--gray-800);
+        }
+
+        /* Navbar */
+        .navbar {
+            background: rgba(255,255,255,0.96);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid #e2e8f0;
+            padding: 16px 40px;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        .nav-container {
+            max-width: 1280px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .logo-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .logo-box {
+            width: 42px; height: 42px;
+            background: #14b8a6;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 1.4rem;
+        }
+        .nav-brand {
+            font-family: 'DM Serif Display', serif;
+            font-size: 1.65rem;
+            color: var(--teal-700);
+            font-weight: 600;
+        }
+        .nav-actions {
+            display: flex;
+            gap: 12px;
+        }
+        .btn-nav {
+            padding: 9px 20px;
+            border-radius: 9999px;
+            font-weight: 500;
+            text-decoration: none;
+            font-size: 0.95rem;
+        }
+        .btn-profile { background: #f0fdfa; color: var(--teal-700); }
+        .btn-logout { background: #f8fafc; color: var(--gray-600); }
+
+        /* Content */
+        .container {
+            max-width: 1280px;
+            margin: 40px auto;
+            padding: 0 24px;
+        }
+        .welcome {
+            margin-bottom: 40px;
+        }
+        .welcome h1 {
+            font-family: 'DM Serif Display', serif;
+            font-size: 2.35rem;
+            color: var(--teal-700);
+        }
+        .welcome p {
+            color: var(--gray-600);
+            font-size: 1.05rem;
+        }
+
+        /* Cards - Chỉ 2 thẻ mỗi hàng */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);   /* 2 cards per row */
+            gap: 24px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 20px;
+            padding: 28px 24px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+            transition: all 0.3s;
+        }
+        .card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.12);
+        }
+        .card-icon {
+            width: 58px;
+            height: 58px;
+            background: #f0fdfa;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+            font-size: 28px;
+        }
+        .card h5 {
+            font-size: 1.35rem;
+            margin-bottom: 8px;
+            color: var(--gray-800);
+        }
+        .card p {
+            color: var(--gray-600);
+            line-height: 1.6;
+            margin-bottom: 24px;
+        }
+        .btn-primary {
+            background: #14b8a6;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 9999px;
+            font-weight: 600;
+            width: 100%;
+            text-align: center;
+            text-decoration: none;
+            transition: all 0.2s;
+        }
+        .btn-primary:hover {
+            background: #0f766e;
+            transform: translateY(-2px);
+        }
+
+        /* Responsive: trên mobile chuyển thành 1 cột */
+        @media (max-width: 768px) {
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<!-- Navbar -->
+<nav class="navbar">
+    <div class="nav-container">
+        <div class="logo-row">
+            <div class="logo-box">+</div>
+            <span class="nav-brand">SmartHealth</span>
+        </div>
+        <div class="nav-actions">
+            <a th:href="@{/profile}" class="btn-nav btn-profile">Hồ sơ cá nhân</a>
+            <a th:href="@{/logout}" class="btn-nav btn-logout">Đăng xuất</a>
+        </div>
+    </div>
+</nav>
+
+<div class="container">
+    <div class="welcome">
+        <h1>Xin chào, BS. <span th:text="${profile.fullName}">Nguyễn Văn A</span></h1>
+        <p>Chào mừng bạn trở lại với hệ thống quản lý y tế số</p>
+    </div>
+
+    <div class="dashboard-grid">
+        <!-- Card 1 -->
+        <div class="card">
+            <div class="card-icon">💊</div>
+            <h5>Duyệt đơn thuốc</h5>
+            <p>Xem và duyệt đơn thuốc từ bệnh nhân</p>
+            <a th:href="@{/doctor/prescriptions/approve}" class="btn-primary">Duyệt đơn thuốc</a>
+        </div>
+
+        <!-- Card 2 -->
+        <div class="card">
+            <div class="card-icon">📋</div>
+            <h5>Kê đơn thuốc</h5>
+            <p>Tạo đơn thuốc mới cho bệnh nhân</p>
+            <a th:href="@{/doctor/prescriptions}" class="btn-primary">Kê đơn thuốc</a>
+        </div>
+
+        <!-- Card 3 -->
+        <div class="card">
+            <div class="card-icon">📝</div>
+            <h5>Nhập kết quả chẩn đoán</h5>
+            <p>Ghi nhận kết quả khám và chẩn đoán</p>
+            <a th:href="@{/doctor/diagnosis}" class="btn-primary">Nhập kết quả</a>
+        </div>
+
+        <!-- Card 4 -->
+        <div class="card">
+            <div class="card-icon">👤</div>
+            <h5>Bệnh nhân chờ khám</h5>
+            <p>Xem danh sách bệnh nhân hôm nay</p>
+            <a th:href="@{/doctor/patients}" class="btn-primary">Xem danh sách</a>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

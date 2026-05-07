@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Danh sách thuốc</title>
+</head>
+<body>
+<h1>Danh sách thuốc</h1>
+<a th:href="@{/admin/medicines/add}">Thêm thuốc mới</a>
+<table border="1">
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Tên thuốc</th>
+        <th>Mô tả</th>
+        <th>Số lượng</th>
+        <th>Đơn vị</th>
+        <th>Giá</th>
+        <th>Hành động</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="medicine : ${medicines}">
+        <td th:text="${medicine.medicineId}"></td>
+        <td th:text="${medicine.name}"></td>
+        <td th:text="${medicine.description}"></td>
+        <td th:text="${medicine.stockQuantity}"></td>
+        <td th:text="${medicine.unit}"></td>
+        <td th:text="${medicine.price}"></td>
+        <td>
+            <a th:href="@{'/admin/medicines/edit/' + ${medicine.medicineId}}">Sửa</a> |
+            <a th:href="@{'/admin/medicines/delete/' + ${medicine.medicineId}}">Xóa</a>
+        </td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>

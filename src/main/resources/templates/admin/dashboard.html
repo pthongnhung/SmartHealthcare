@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title>Trang chủ Quản trị viên – Smart Healthcare Platform</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=DM+Serif+Display:ital@0;1&display=swap');
+
+        :root {
+            --teal-700: #0f766e;
+            --teal-600: #0d9488;
+            --teal-500: #14b8a6;
+            --teal-50:  #f0fdfa;
+            --gray-800: #1e293b;
+            --gray-600: #475569;
+            --white: #ffffff;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background: linear-gradient(135deg, #f0fdfa 0%, #e0f2fe 100%);
+            min-height: 100vh;
+            color: var(--gray-800);
+        }
+
+        /* Navbar theo ảnh */
+        .navbar {
+            background: white;
+            padding: 16px 40px;
+            border-bottom: 1px solid #e2e8f0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        .nav-container {
+            max-width: 1280px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .logo {
+            font-family: 'DM Serif Display', serif;
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #0f766e;
+            text-decoration: none;
+        }
+        .nav-links a {
+            margin-left: 24px;
+            text-decoration: none;
+            color: #0f766e;
+            font-weight: 500;
+        }
+
+        /* Content */
+        .container {
+            max-width: 1280px;
+            margin: 40px auto;
+            padding: 0 24px;
+        }
+        .welcome h1 {
+            font-family: 'DM Serif Display', serif;
+            font-size: 2.45rem;
+            color: #0f766e;
+            margin-bottom: 6px;
+        }
+        .welcome p {
+            color: #475569;
+            font-size: 1.05rem;
+        }
+
+        /* Cards */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 24px;
+            margin-top: 40px;
+        }
+        .card {
+            background: white;
+            border-radius: 20px;
+            padding: 28px 24px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.07);
+            transition: all 0.3s;
+        }
+        .card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.12);
+        }
+        .card-icon {
+            width: 62px;
+            height: 62px;
+            background: #f0fdfa;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+        .card-icon img {
+            width: 36px;
+            height: 36px;
+        }
+        .card h5 {
+            font-size: 1.3rem;
+            margin-bottom: 8px;
+            color: #1e293b;
+        }
+        .card p {
+            color: #475569;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+        .btn {
+            background: #14b8a6;
+            color: white;
+            padding: 12px 24px;
+            border-radius: 9999px;
+            font-weight: 600;
+            width: 100%;
+            text-align: center;
+            text-decoration: none;
+            transition: 0.2s;
+        }
+        .btn:hover {
+            background: #0f766e;
+        }
+    </style>
+</head>
+<body>
+
+<nav class="navbar">
+    <div class="nav-container">
+        <a class="logo" th:href="@{/home}">SmartHealth</a>
+        <div class="nav-links">
+            <a th:href="@{/profile}">Hồ sơ cá nhân</a>
+            <a th:href="@{/logout}">Đăng xuất</a>
+        </div>
+    </div>
+</nav>
+
+<div class="container">
+    <div class="welcome">
+        <h1>Xin chào, <span th:text="${profile.fullName}">Quản trị viên</span></h1>
+        <p>Chào mừng bạn trở lại với nền tảng y tế số toàn diện</p>
+    </div>
+
+    <div class="dashboard-grid">
+        <div class="card">
+            <div class="card-icon">
+                <img src="https://cdn-icons-png.flaticon.com/512/1077/1077114.png" alt="Hồ sơ">
+            </div>
+            <h5>Quản lý hồ sơ cá nhân</h5>
+            <p>Cập nhật thông tin tài khoản quản trị</p>
+            <a th:href="@{/admin/profile}" class="btn">Truy cập</a>
+        </div>
+
+        <div class="card">
+            <div class="card-icon">
+                <img src="https://cdn-icons-png.flaticon.com/512/3004/3004458.png" alt="Xét nghiệm">
+            </div>
+            <h5>Xem danh mục loại xét nghiệm</h5>
+            <p>Tra cứu các loại xét nghiệm có sẵn</p>
+            <a th:href="@{/admin/test-types}" class="btn">Xem danh mục</a>
+        </div>
+
+        <div class="card">
+            <div class="card-icon">
+                <img src="https://cdn-icons-png.flaticon.com/512/4320/4320337.png" alt="Chuyên khoa">
+            </div>
+            <h5>Xem danh mục chuyên khoa</h5>
+            <p>Danh sách các chuyên khoa y tế</p>
+            <a th:href="@{/admin/specialties}" class="btn">Xem chuyên khoa</a>
+        </div>
+
+        <div class="card">
+            <div class="card-icon">
+                <img src="https://cdn-icons-png.flaticon.com/512/2966/2966489.png" alt="Đơn thuốc">
+            </div>
+            <h5>Duyệt đơn thuốc</h5>
+            <p>Xác nhận và quản lý đơn thuốc</p>
+            <a th:href="@{/admin/prescriptions}" class="btn">Duyệt đơn thuốc</a>
+        </div>
+
+        <div class="card">
+            <div class="card-icon">
+                <img src="https://cdn-icons-png.flaticon.com/512/2965/2965567.png" alt="Thuốc">
+            </div>
+            <h5>Quản lý danh mục thuốc</h5>
+            <p>Quản lý thông tin thuốc trong hệ thống</p>
+            <a th:href="@{/admin/medicines}" class="btn">Quản lý thuốc</a>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

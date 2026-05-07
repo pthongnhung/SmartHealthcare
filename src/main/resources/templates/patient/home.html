@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title>Trang chủ – Smart Healthcare Platform</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=DM+Serif+Display:ital@0;1&display=swap');
+
+        :root {
+            --teal-950: #042f2e;
+            --teal-900: #134e4a;
+            --teal-800: #115e59;
+            --teal-700: #0f766e;
+            --teal-600: #0d9488;
+            --teal-500: #14b8a6;
+            --teal-400: #2dd4bf;
+            --teal-300: #5eead4;
+            --teal-100: #ccfbf1;
+            --teal-50:  #f0fdfa;
+            --white: #ffffff;
+            --gray-50: #f8fafc;
+            --gray-100: #f1f5f9;
+            --gray-200: #e2e8f0;
+            --gray-400: #94a3b8;
+            --gray-600: #475569;
+            --gray-800: #1e293b;
+            --shadow: 0 25px 50px -12px rgb(4 47 46 / 0.15);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background: var(--gray-50);
+            min-height: 100vh;
+            color: var(--gray-800);
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* Background */
+        .bg {
+            position: fixed; inset: 0; z-index: -1;
+            background: linear-gradient(135deg, #f0fdfa 0%, #e0f2fe 50%, #f0fdf4 100%);
+        }
+        .bg-circle {
+            position: fixed; border-radius: 50%; pointer-events: none;
+            animation: float 18s ease-in-out infinite alternate;
+        }
+        .bc1 { width:700px; height:700px; background:radial-gradient(circle, rgba(20,184,166,0.12), transparent 70%); top:-200px; left:-200px; }
+        .bc2 { width:500px; height:500px; background:radial-gradient(circle, rgba(34,197,94,0.10), transparent 70%); bottom:-150px; right:-150px; animation-delay:-7s; }
+
+        @keyframes float {
+            from { transform: translate(0,0) scale(1); }
+            to   { transform: translate(30px,25px) scale(1.05); }
+        }
+
+        /* Navbar */
+        .navbar {
+            background: rgba(255,255,255,0.95);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--gray-200);
+            padding: 16px 40px;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        .nav-brand {
+            font-family: 'DM Serif Display', serif;
+            font-size: 1.55rem;
+            color: var(--teal-700);
+            font-weight: 600;
+        }
+        .nav-actions a {
+            font-weight: 500;
+            padding: 10px 20px;
+            border-radius: 12px;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+
+        /* Main Content */
+        .container {
+            max-width: 1280px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        .welcome {
+            margin-bottom: 40px;
+        }
+        .welcome h1 {
+            font-family: 'DM Serif Display', serif;
+            font-size: 2.4rem;
+            color: var(--teal-800);
+            margin-bottom: 8px;
+        }
+        .welcome p {
+            font-size: 1.05rem;
+            color: var(--gray-600);
+        }
+
+        /* Cards */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+            gap: 24px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 24px;
+            padding: 32px 28px;
+            box-shadow: var(--shadow);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 1px solid var(--gray-100);
+            position: relative;
+            overflow: hidden;
+        }
+        .card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 35px 60px -15px rgb(4 47 46 / 0.2);
+        }
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--teal-500), var(--teal-400));
+        }
+
+        .card-icon {
+            width: 58px;
+            height: 58px;
+            background: var(--teal-50);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+            color: var(--teal-600);
+        }
+
+        .card h5 {
+            font-size: 1.35rem;
+            margin-bottom: 10px;
+            color: var(--gray-800);
+        }
+        .card p {
+            color: var(--gray-600);
+            line-height: 1.6;
+            margin-bottom: 24px;
+        }
+
+        .btn {
+            padding: 12px 28px;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            transition: all 0.3s;
+            border: none;
+            cursor: pointer;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, var(--teal-700), var(--teal-500));
+            color: white;
+            box-shadow: 0 4px 15px rgba(13,148,136,0.3);
+        }
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(13,148,136,0.4);
+        }
+        .btn-success {
+            background: linear-gradient(135deg, #10b981, #34d399);
+            color: white;
+        }
+        .btn-info {
+            background: linear-gradient(135deg, #0ea5e9, #38bdf8);
+            color: white;
+        }
+
+        .footer-text {
+            margin-top: 60px;
+            text-align: center;
+            font-size: 0.8rem;
+            color: var(--gray-400);
+        }
+    </style>
+</head>
+<body>
+
+<div class="bg"></div>
+<div class="bg-circle bc1"></div>
+<div class="bg-circle bc2"></div>
+
+<!-- Navbar -->
+<nav class="navbar">
+    <div class="container" style="display:flex; justify-content:space-between; align-items:center; max-width:1280px; margin:0 auto;">
+        <a class="nav-brand" th:href="@{/home}">SmartHealth</a>
+        <div class="nav-actions d-flex align-items-center">
+            <a th:href="@{/profile}" class="btn btn-info mr-3">Hồ sơ cá nhân</a>
+            <a th:href="@{/logout}" class="btn" style="background:#f1f5f9; color:#475569;">Đăng xuất</a>
+        </div>
+    </div>
+</nav>
+
+<div class="container">
+    <div class="welcome">
+        <h1>Xin chào, <span th:text="${profile.fullName}">Bệnh nhân</span>!</h1>
+        <p>Chào mừng bạn trở lại với nền tảng y tế số thông minh</p>
+    </div>
+
+    <div class="dashboard-grid">
+        <!-- Card 1 -->
+        <div class="card">
+            <div class="card-icon">
+                <svg width="32" height="32" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+                    <path d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2"/>
+                </svg>
+            </div>
+            <h5>Đặt lịch khám</h5>
+            <p class="text-muted">Đăng ký lịch hẹn với bác sĩ nhanh chóng và tiện lợi</p>
+            <a th:href="@{/patient/appointments}" class="btn btn-primary">Thực hiện ngay</a>
+        </div>
+
+        <!-- Card 2 -->
+        <div class="card">
+            <div class="card-icon">
+                <svg width="32" height="32" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+                    <path d="M19 11H5m14 0a2 2 0 0 1 2 2v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-6a2 2 0 0 1 2-2m14 0V9a2 2 0 0 0-2-2M5 11V9a2 2 0 0 1 2-2m0 0V5a2 2 0 0 1 2-2"/>
+                </svg>
+            </div>
+            <h5>Lịch sử bệnh án</h5>
+            <p class="text-muted">Xem lại toàn bộ hồ sơ khám chữa bệnh của bạn</p>
+            <a th:href="@{/patient/records}" class="btn btn-success">Xem lịch sử</a>
+        </div>
+
+        <!-- Card 3 -->
+        <div class="card">
+            <div class="card-icon">
+                <svg width="32" height="32" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+                    <path d="M12 8v4l3 3m6-3a9 9 0 0 1-18 0 9 9 0 0 1 18 0z"/>
+                </svg>
+            </div>
+            <h5>Quản lý lịch khám</h5>
+            <p class="text-muted">Xem và quản lý các lịch hẹn đã đặt</p>
+            <a th:href="@{/patient/appointments}" class="btn btn-info">Xem lịch hẹn</a>
+        </div>
+    </div>
+
+    <div class="footer-text">
+        Smart Healthcare Platform • Tuân thủ quy định Bộ Y tế Việt Nam • Dữ liệu được bảo mật
+    </div>
+</div>
+
+</body>
+</html>

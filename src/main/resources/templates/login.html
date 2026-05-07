@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title>Đăng nhập – Smart Healthcare Platform</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=DM+Serif+Display:ital@0;1&display=swap');
+
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        :root {
+            --teal-950: #042f2e;
+            --teal-900: #134e4a;
+            --teal-800: #115e59;
+            --teal-700: #0f766e;
+            --teal-600: #0d9488;
+            --teal-500: #14b8a6;
+            --teal-400: #2dd4bf;
+            --teal-300: #5eead4;
+            --teal-100: #ccfbf1;
+            --teal-50:  #f0fdfa;
+            --white: #ffffff;
+            --gray-50: #f8fafc;
+            --gray-100: #f1f5f9;
+            --gray-200: #e2e8f0;
+            --gray-400: #94a3b8;
+            --gray-600: #475569;
+            --gray-800: #1e293b;
+            --red: #f43f5e;
+            --shadow: 0 40px 100px rgba(4,47,46,0.20), 0 8px 30px rgba(4,47,46,0.12);
+        }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            min-height: 100vh;
+            background: var(--gray-50);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .bg {
+            position: fixed; inset: 0; z-index: 0;
+            background: linear-gradient(135deg, #f0fdfa 0%, #e0f2fe 50%, #f0fdf4 100%);
+        }
+        .bg-circle {
+            position: fixed; border-radius: 50%; pointer-events: none;
+            animation: float 14s ease-in-out infinite alternate;
+        }
+        .bc1 { width:600px;height:600px; background:radial-gradient(circle, rgba(20,184,166,0.18), transparent 70%); top:-150px;left:-150px; }
+        .bc2 { width:450px;height:450px; background:radial-gradient(circle, rgba(34,197,94,0.14), transparent 70%); bottom:-100px;right:-100px; animation-delay:-5s; }
+        .bc3 { width:300px;height:300px; background:radial-gradient(circle, rgba(13,148,136,0.12), transparent 70%); top:40%;left:55%; animation-delay:-9s; }
+
+        @keyframes float {
+            from { transform: translate(0,0) scale(1); }
+            to   { transform: translate(25px,18px) scale(1.04); }
+        }
+
+        .ecg-line {
+            position: fixed; bottom: 48px; left: 0; right: 0; z-index: 1; opacity: 0.12; pointer-events:none;
+        }
+
+        .card {
+            position: relative; z-index: 10;
+            display: flex;
+            width: 900px;
+            max-width: calc(100vw - 24px);
+            background: var(--white);
+            border-radius: 32px;
+            box-shadow: var(--shadow);
+            overflow: hidden;
+            animation: appear 0.8s cubic-bezier(0.22,1,0.36,1) both;
+        }
+        @keyframes appear {
+            from { opacity:0; transform:translateY(36px) scale(0.98); }
+            to   { opacity:1; transform:none; }
+        }
+
+        /* ── LEFT ── */
+        .left {
+            width: 340px; flex-shrink: 0;
+            background: linear-gradient(160deg, var(--teal-950) 0%, var(--teal-800) 55%, var(--teal-600) 100%);
+            padding: 48px 40px;
+            display: flex; flex-direction: column;
+            position: relative; overflow: hidden;
+        }
+        .left::before {
+            content: ''; position: absolute; inset: 0;
+            background-image:
+                    repeating-linear-gradient(0deg, rgba(255,255,255,0.03) 0px, rgba(255,255,255,0.03) 1px, transparent 1px, transparent 40px),
+                    repeating-linear-gradient(90deg, rgba(255,255,255,0.03) 0px, rgba(255,255,255,0.03) 1px, transparent 1px, transparent 40px);
+        }
+        .left-glow {
+            position: absolute; width: 300px; height: 300px; border-radius: 50%;
+            background: radial-gradient(circle, rgba(45,212,191,0.25), transparent 70%);
+            bottom: -80px; right: -80px; pointer-events: none;
+        }
+        .logo-row {
+            display: flex; align-items: center; gap: 12px;
+            position: relative; z-index: 1; margin-bottom: 52px;
+        }
+        .logo-box {
+            width: 44px; height: 44px;
+            background: rgba(255,255,255,0.12);
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 14px;
+            display: flex; align-items: center; justify-content: center;
+            backdrop-filter: blur(8px);
+        }
+        .logo-box svg { width: 24px; height: 24px; }
+        .logo-text { display: flex; flex-direction: column; }
+        .logo-name { font-family: 'DM Serif Display', serif; font-size: 1.05rem; color: #fff; line-height: 1; }
+        .logo-sub { font-size: 0.65rem; color: var(--teal-300); letter-spacing: 0.12em; text-transform: uppercase; margin-top: 3px; }
+
+        .left-hero { position: relative; z-index: 1; flex: 1; }
+        .left-tag {
+            display: inline-flex; align-items: center; gap: 6px;
+            background: rgba(45,212,191,0.15); border: 1px solid rgba(45,212,191,0.3);
+            border-radius: 20px; padding: 5px 12px;
+            font-size: 0.72rem; color: var(--teal-300);
+            letter-spacing: 0.06em; text-transform: uppercase; font-weight: 600; margin-bottom: 20px;
+        }
+        .left-tag-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--teal-400); animation: pulse 2s infinite; }
+        @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
+
+        .left-heading { font-family: 'DM Serif Display', serif; font-size: 2.1rem; line-height: 1.2; color: #fff; margin-bottom: 16px; }
+        .left-heading em { font-style: italic; color: var(--teal-300); }
+        .left-desc { font-size: 0.83rem; color: rgba(255,255,255,0.6); line-height: 1.7; margin-bottom: 36px; }
+
+        .stats { display: flex; }
+        .stat { flex: 1; padding: 16px 0; border-top: 1px solid rgba(255,255,255,0.1); }
+        .stat + .stat { margin-left: 20px; padding-left: 20px; border-left: 1px solid rgba(255,255,255,0.1); }
+        .stat-num { font-family: 'DM Serif Display', serif; font-size: 1.5rem; color: var(--teal-300); line-height: 1; }
+        .stat-label { font-size: 0.72rem; color: rgba(255,255,255,0.5); margin-top: 4px; }
+
+        .left-footer { position: relative; z-index: 1; margin-top: 32px; }
+        .cert-row { display: flex; align-items: center; gap: 8px; }
+        .cert-badge {
+            width: 32px; height: 32px; border-radius: 8px;
+            background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15);
+            display: flex; align-items: center; justify-content: center;
+        }
+        .cert-badge svg { width: 16px; height: 16px; }
+        .cert-text { font-size: 0.72rem; color: rgba(255,255,255,0.5); }
+
+        /* ── RIGHT ── */
+        .right {
+            flex: 1; padding: 52px 52px;
+            display: flex; flex-direction: column; justify-content: center;
+        }
+        .form-eyebrow {
+            font-size: 0.72rem; font-weight: 600; letter-spacing: 0.12em;
+            text-transform: uppercase; color: var(--teal-600); margin-bottom: 10px;
+        }
+        .form-title { font-family: 'DM Serif Display', serif; font-size: 2rem; color: var(--gray-800); line-height: 1.15; margin-bottom: 6px; }
+        .form-sub { font-size: 0.84rem; color: var(--gray-400); margin-bottom: 36px; }
+
+        .field { margin-bottom: 18px; }
+        .field label {
+            display: flex; align-items: center; justify-content: space-between;
+            font-size: 0.75rem; font-weight: 600;
+            letter-spacing: 0.05em; text-transform: uppercase;
+            color: var(--gray-600); margin-bottom: 8px;
+        }
+        .input-wrap { position: relative; }
+        .input-icon {
+            position: absolute; left: 15px; top: 50%; transform: translateY(-50%);
+            color: var(--gray-400); width: 17px; height: 17px;
+            transition: color 0.2s; pointer-events: none;
+        }
+        .input-wrap input {
+            width: 100%;
+            padding: 13px 14px 13px 44px;
+            border: 1.5px solid var(--gray-200);
+            border-radius: 12px;
+            font-family: 'DM Sans', sans-serif;
+            font-size: 0.9rem;
+            color: var(--gray-800);
+            background: var(--teal-50);
+            outline: none;
+            transition: all 0.2s;
+        }
+        .input-wrap input::placeholder { color: var(--gray-400); }
+        .input-wrap input:focus {
+            border-color: var(--teal-500);
+            background: #fff;
+            box-shadow: 0 0 0 4px rgba(20,184,166,0.12);
+        }
+        .input-wrap:focus-within .input-icon { color: var(--teal-600); }
+
+        /* Invalid highlight (HTML5 constraint validation) */
+        .input-wrap input:invalid:not(:placeholder-shown) {
+            border-color: var(--red);
+            background: #fff1f2;
+        }
+        .input-wrap input:invalid:not(:placeholder-shown) ~ .input-icon { color: var(--red); }
+
+        .forgot {
+            font-size: 0.75rem; color: var(--teal-700); font-weight: 600;
+            text-decoration: none; transition: color 0.2s;
+        }
+        .forgot:hover { color: var(--teal-500); }
+
+        .btn {
+            width: 100%; margin-top: 8px; padding: 14px;
+            border: none; border-radius: 12px;
+            font-family: 'DM Sans', sans-serif;
+            font-size: 0.95rem; font-weight: 600;
+            cursor: pointer; transition: all 0.2s;
+            display: flex; align-items: center; justify-content: center; gap: 8px;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, var(--teal-700), var(--teal-500));
+            color: #fff;
+            box-shadow: 0 4px 18px rgba(13,148,136,0.38);
+        }
+        .btn-primary:hover { transform: translateY(-1px); box-shadow: 0 6px 24px rgba(13,148,136,0.5); }
+        .btn-primary:active { transform: none; }
+        .btn-primary svg { width: 18px; height: 18px; }
+
+        .alert {
+            margin-top: 14px; padding: 11px 15px;
+            border-radius: 10px; font-size: 0.81rem; font-weight: 500;
+            display: flex; align-items: center; gap: 9px;
+            animation: fadeIn 0.3s ease;
+        }
+        @keyframes fadeIn { from{opacity:0;transform:translateY(-5px)}to{opacity:1;transform:none} }
+        .alert-error   { background:#fff1f2; color:var(--red); border:1px solid #fecdd3; }
+        .alert-success { background:var(--teal-50); color:var(--teal-800); border:1px solid var(--teal-300); }
+        .alert svg { width:15px;height:15px;flex-shrink:0; }
+
+        .divider { display:flex;align-items:center;gap:12px;margin:22px 0; }
+        .divider::before,.divider::after { content:'';flex:1;height:1px;background:var(--gray-200); }
+        .divider span { font-size:0.74rem;color:var(--gray-400); }
+
+        .register { text-align:center;font-size:0.84rem;color:var(--gray-400); }
+        .register a { color:var(--teal-700);font-weight:600;text-decoration:none;transition:color 0.2s; }
+        .register a:hover { color:var(--teal-500); }
+
+        .privacy {
+            margin-top: 28px; padding-top: 20px; border-top: 1px solid var(--gray-100);
+            display: flex; align-items: flex-start; gap: 10px;
+        }
+        .privacy svg { width:15px;height:15px;color:var(--teal-600);flex-shrink:0;margin-top:1px; }
+        .privacy p { font-size: 0.72rem; color: var(--gray-400); line-height: 1.55; }
+        .privacy a { color: var(--teal-600); text-decoration: none; }
+
+        @media (max-width: 660px) {
+            .left { display: none; }
+            .right { padding: 36px 24px; }
+            .card { border-radius: 20px; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="bg"></div>
+<div class="bg-circle bc1"></div>
+<div class="bg-circle bc2"></div>
+<div class="bg-circle bc3"></div>
+
+<svg class="ecg-line" viewBox="0 0 1440 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <polyline points="0,30 200,30 260,30 280,5 300,55 320,10 340,50 360,30 560,30 620,30 640,5 660,55 680,10 700,50 720,30 920,30 980,30 1000,5 1020,55 1040,10 1060,50 1080,30 1280,30 1440,30"
+              stroke="#0d9488" stroke-width="1.5" fill="none"/>
+</svg>
+
+<div class="card">
+
+    <!-- LEFT -->
+    <div class="left">
+        <div class="left-glow"></div>
+        <div class="logo-row">
+            <div class="logo-box">
+                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <rect x="9" y="3" width="6" height="18" rx="2" fill="rgba(255,255,255,0.9)"/>
+                    <rect x="3" y="9" width="18" height="6" rx="2" fill="rgba(255,255,255,0.9)"/>
+                    <circle cx="12" cy="12" r="2.5" fill="#0d9488"/>
+                </svg>
+            </div>
+            <div class="logo-text">
+                <span class="logo-name">SmartHealth</span>
+                <span class="logo-sub">Digital Platform</span>
+            </div>
+        </div>
+
+        <div class="left-hero">
+            <div class="left-tag">
+                <span class="left-tag-dot"></span>
+                Hệ thống trực tuyến
+            </div>
+            <h2 class="left-heading">Nền tảng Y tế Số<br><em>Toàn diện</em></h2>
+            <p class="left-desc">Kết nối bệnh nhân, bác sĩ và cơ sở y tế trên một nền tảng thống nhất — an toàn, nhanh chóng và hiệu quả.</p>
+            <div class="stats">
+                <div class="stat">
+                    <div class="stat-num">500+</div>
+                    <div class="stat-label">Bác sĩ chuyên khoa</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-num">120K</div>
+                    <div class="stat-label">Bệnh nhân tin dùng</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="left-footer">
+            <div class="cert-row">
+                <div class="cert-badge">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="rgba(45,212,191,0.8)" stroke-width="2">
+                        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                    </svg>
+                </div>
+                <div class="cert-badge">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="rgba(45,212,191,0.8)" stroke-width="2">
+                        <rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+                    </svg>
+                </div>
+                <div class="cert-text">Tuân thủ Bộ Y tế &amp; HIPAA<br>Mã hoá dữ liệu đầu-cuối</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- RIGHT -->
+    <div class="right">
+        <p class="form-eyebrow">Cổng bệnh nhân &amp; nhân viên y tế</p>
+        <h1 class="form-title">Đăng nhập</h1>
+        <p class="form-sub">Sử dụng email đã đăng ký với hệ thống của bạn</p>
+
+        <form th:action="@{/login}" method="post">
+
+            <div class="field">
+                <label for="username"><span>Địa chỉ Email</span></label>
+                <div class="input-wrap">
+                    <svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+                        <polyline points="22,6 12,13 2,6"/>
+                    </svg>
+                    <input type="email"
+                           id="username"
+                           name="username"
+                           class="form-control"
+                           placeholder="Email"
+                           >
+                </div>
+            </div>
+
+            <div class="field">
+                <label for="password">
+                    <span>Mật khẩu</span>
+                    <a href="#" class="forgot">Quên mật khẩu?</a>
+                </label>
+                <div class="input-wrap">
+                    <svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+                        <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+                    </svg>
+                    <input type="password"
+                           id="password"
+                           name="password"
+                           class="form-control"
+                           placeholder="Password"
+                           >
+                </div>
+            </div>
+
+            <button type="submit" class="btn btn-primary">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+                    <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/>
+                    <polyline points="10 17 15 12 10 7"/>
+                    <line x1="15" y1="12" x2="3" y2="12"/>
+                </svg>
+                Truy cập hệ thống
+            </button>
+        </form>
+
+        <!-- ERROR — th:if="${param.error}" -->
+        <p class="alert alert-error"
+           th:if="${param.error}"
+           id="loginError">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10"/>
+                <line x1="12" y1="8" x2="12" y2="12"/>
+                <line x1="12" y1="16" x2="12.01" y2="16"/>
+            </svg>
+            Email hoặc mật khẩu không đúng
+        </p>
+
+        <!-- LOGOUT — th:if="${param.logout}" -->
+        <p class="alert alert-success"
+           th:if="${param.logout}">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="20 6 9 17 4 12"/>
+            </svg>
+            Đăng xuất thành công
+        </p>
+
+        <div class="divider"><span>hoặc</span></div>
+
+        <p class="register">
+            Chưa có tài khoản? <a th:href="@{/register}">Đăng ký ngay</a>
+        </p>
+
+        <div class="privacy">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+            </svg>
+            <p>Thông tin của bạn được bảo vệ theo <a href="#">Chính sách bảo mật</a> và <a href="#">Điều khoản sử dụng</a> của SmartHealth Platform. Hệ thống tuân thủ quy định Bộ Y tế Việt Nam.</p>
+        </div>
+    </div>
+
+</div>
+
+<!-- ✅ GIỮ NGUYÊN LOGIC GỐC -->
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const inputs = document.querySelectorAll("input");
+        const error  = document.getElementById("loginError");
+
+        if (inputs && error) {
+            inputs.forEach(input => {
+                input.addEventListener("input", function () {
+                    error.style.display = "none";
+                });
+            });
+        }
+    });
+</script>
+
+</body>
+</html>
