@@ -18,15 +18,22 @@ public class Medicine {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "medicine_id")
     private Integer medicineId;
 
+    @Column(name = "name")
     private String name;
+
+    @Column(name = "description")
     private String description;
 
     @Column(name = "stock_quantity")
     private Integer stockQuantity;
 
+    @Column(name = "unit")
     private String unit;
+
+    @Column(name = "price")
     private Double price;
 
     // 1-N

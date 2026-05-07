@@ -19,27 +19,30 @@ public class UserProfile {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "profile_id")   // đổi tên cột
     private Integer profileId;
 
-    // 1-1
     @OneToOne
     @JoinColumn(name = "user_id", nullable = false, unique = true)
     private User user;
 
-    @Column(length = 100)
+    @Column(name = "full_name", length = 100)
     private String fullName;
 
+    @Column(name = "dob")
     private LocalDate dob;
 
+    @Column(name = "gender")
     @Enumerated(EnumType.STRING)
     private Gender gender;
 
-    @Column(length = 20)
+    @Column(name = "phone", length = 20)
     private String phone;
 
-    @Column(length = 100, unique = true)
+    @Column(name = "email", length = 100, unique = true)
     private String email;
 
-    @Column(length = 255)
+    @Column(name = "address", length = 255)
     private String address;
+
 }

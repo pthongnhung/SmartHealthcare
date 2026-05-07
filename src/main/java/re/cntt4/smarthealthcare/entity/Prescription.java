@@ -19,15 +19,17 @@ public class Prescription {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "prescription_id")
     private Integer prescriptionId;
 
-    // 1-1
     @OneToOne
     @JoinColumn(name = "record_id", unique = true, nullable = false)
     private MedicalRecord medicalRecord;
 
+    @Column(name = "status")
     @Enumerated(EnumType.STRING)
     private PrescriptionStatus status;
+
 
     // 1-N
     @OneToMany(mappedBy = "prescription", cascade = CascadeType.ALL)

@@ -23,28 +23,31 @@ public class Appointment {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "appointment_id")
     private Integer appointmentId;
 
-    // N-1
     @ManyToOne
     @JoinColumn(name = "patient_id", nullable = false)
     private Patient patient;
 
-    // N-1
     @ManyToOne
     @JoinColumn(name = "doctor_id", nullable = false)
     private Doctor doctor;
 
-    // N-1
     @ManyToOne
     @JoinColumn(name = "specialty_id", nullable = false)
     private Specialty specialty;
 
+    @Column(name = "appointment_date")
     private LocalDate appointmentDate;
+
+    @Column(name = "appointment_time")
     private LocalTime appointmentTime;
 
+    @Column(name = "status")
     @Enumerated(EnumType.STRING)
     private AppointmentStatus status;
+
 
     // 1-1
     @OneToOne(mappedBy = "appointment", cascade = CascadeType.ALL)

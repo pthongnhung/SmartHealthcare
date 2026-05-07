@@ -18,16 +18,17 @@ public class Patient {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "patient_id")
     private Integer patientId;
 
-    // 1-1
     @OneToOne
     @JoinColumn(name = "user_id", nullable = false, unique = true)
     private User user;
 
+    @Column(name = "insurance_number")
     private String insuranceNumber;
 
-    // 1-N
     @OneToMany(mappedBy = "patient")
     private List<Appointment> appointments;
+
 }

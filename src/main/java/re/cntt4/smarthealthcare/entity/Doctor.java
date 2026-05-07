@@ -18,19 +18,23 @@ public class Doctor {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "doctor_id")   // khóa chính
     private Integer doctorId;
 
     // 1-1
     @OneToOne
-    @JoinColumn(name = "user_id", nullable = false, unique = true)
+    @JoinColumn(name = "user_id", nullable = false, unique = true) // khóa ngoại
     private User user;
 
     // N-1
     @ManyToOne
-    @JoinColumn(name = "specialty_id", nullable = false)
+    @JoinColumn(name = "specialty_id", nullable = false) // khóa ngoại
     private Specialty specialty;
 
+    @Column(name = "license_number")
     private String licenseNumber;
+
+    @Column(name = "experience_years")
     private Integer experienceYears;
 
     // 1-N
