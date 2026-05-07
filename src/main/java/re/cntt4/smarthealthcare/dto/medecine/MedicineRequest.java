@@ -1,8 +1,6 @@
-package re.cntt4.smarthealthcare.dto.medicine;
-
+package re.cntt4.smarthealthcare.dto.medecine;
 import jakarta.validation.constraints.*;
 import lombok.Data;
-
 @Data
 public class MedicineRequest {
     private Integer medicineId;

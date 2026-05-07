@@ -22,7 +22,10 @@ public class Medicine {
 
     private String name;
     private String description;
+
+    @Column(name = "stock_quantity")
     private Integer stockQuantity;
+
     private String unit;
     private Double price;
 

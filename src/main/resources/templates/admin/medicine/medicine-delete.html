@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title>Xác nhận Xóa Thuốc – Smart Healthcare Platform</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=DM+Serif+Display:ital@0;1&display=swap');
+
+        :root {
+            --teal-700: #0f766e;
+            --teal-600: #0d9488;
+            --teal-500: #14b8a6;
+            --teal-50:  #f0fdfa;
+            --gray-800: #1e293b;
+            --gray-600: #475569;
+            --red: #ef4444;
+            --white: #ffffff;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background: linear-gradient(135deg, #f0fdfa 0%, #e0f2fe 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--gray-800);
+        }
+
+        .card {
+            background: white;
+            border-radius: 24px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.12);
+            width: 100%;
+            max-width: 460px;
+            padding: 40px 35px;
+            text-align: center;
+        }
+
+        h1 {
+            font-family: 'DM Serif Display', serif;
+            font-size: 2.1rem;
+            color: var(--red);
+            margin-bottom: 16px;
+        }
+
+        .medicine-name {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: var(--gray-800);
+            background: #f8fafc;
+            padding: 16px;
+            border-radius: 12px;
+            margin: 20px 0;
+        }
+
+        p {
+            color: var(--gray-600);
+            line-height: 1.6;
+            margin-bottom: 30px;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 14px;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 14px;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.3s;
+            border: none;
+        }
+
+        .cancel-btn {
+            background: #e2e8f0;
+            color: var(--gray-800);
+        }
+        .cancel-btn:hover {
+            background: #cbd5e1;
+        }
+
+        .delete-btn {
+            background: var(--red);
+            color: white;
+        }
+        .delete-btn:hover {
+            background: #dc2626;
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+<body>
+
+<div class="card">
+    <h1>Xác nhận xóa</h1>
+
+    <p>Bạn có chắc muốn xóa thuốc này không?</p>
+
+    <div class="medicine-name" th:text="${medicine.name}"></div>
+
+    <form th:action="@{/admin/medicines/delete}" method="post">
+        <input type="hidden" name="id" th:value="${medicine.medicineId}">
+
+        <div class="btn-group">
+            <a th:href="@{/admin/medicines}" class="btn cancel-btn">Hủy</a>
+            <button type="submit" class="btn delete-btn">Xóa</button>
+        </div>
+    </form>
+</div>
+
+</body>
+</html>

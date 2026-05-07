@@ -1,18 +1,165 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Thêm thuốc</title>
+    <meta charset="utf-8">
+    <title>Thêm Thuốc Mới – Smart Healthcare Platform</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=DM+Serif+Display:ital@0;1&display=swap');
+
+        :root {
+            --teal-700: #0f766e;
+            --teal-600: #0d9488;
+            --teal-500: #14b8a6;
+            --teal-50:  #f0fdfa;
+            --gray-800: #1e293b;
+            --gray-600: #475569;
+            --white: #ffffff;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background: linear-gradient(135deg, #f0fdfa 0%, #e0f2fe 100%);
+            min-height: 100vh;
+            color: var(--gray-800);
+        }
+
+        .container {
+            max-width: 680px;
+            margin: 50px auto;
+            padding: 0 20px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 24px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.1);
+            padding: 40px 45px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 35px;
+        }
+        .header h1 {
+            font-family: 'DM Serif Display', serif;
+            font-size: 2.4rem;
+            color: var(--teal-700);
+            margin-bottom: 8px;
+        }
+
+        .form-group {
+            margin-bottom: 22px;
+        }
+        label {
+            display: block;
+            font-weight: 600;
+            color: var(--gray-800);
+            margin-bottom: 8px;
+            font-size: 0.95rem;
+        }
+        input {
+            width: 100%;
+            padding: 14px 18px;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            font-size: 1rem;
+            transition: all 0.2s;
+        }
+        input:focus {
+            border-color: var(--teal-500);
+            outline: none;
+            box-shadow: 0 0 0 4px rgba(20,184,166,0.15);
+        }
+
+        .error {
+            color: #ef4444;
+            font-size: 0.85rem;
+            margin-top: 6px;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, var(--teal-700), var(--teal-500));
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.05rem;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: all 0.3s;
+        }
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(13,148,136,0.4);
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-top: 25px;
+            color: var(--teal-600);
+            text-decoration: none;
+            font-weight: 500;
+        }
+        .back-link:hover {
+            color: var(--teal-700);
+        }
+    </style>
 </head>
 <body>
-<h1>Thêm thuốc mới</h1>
-<form th:action="@{/admin/medicines/add}" th:object="${medicineRequest}" method="post">
-    <p>Tên thuốc: <input type="text" th:field="*{name}"/> <span th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></span></p>
-    <p>Mô tả: <input type="text" th:field="*{description}"/> <span th:if="${#fields.hasErrors('description')}" th:errors="*{description}"></span></p>
-    <p>Số lượng: <input type="number" th:field="*{stockQuantity}"/> <span th:if="${#fields.hasErrors('stockQuantity')}" th:errors="*{stockQuantity}"></span></p>
-    <p>Đơn vị: <input type="text" th:field="*{unit}"/> <span th:if="${#fields.hasErrors('unit')}" th:errors="*{unit}"></span></p>
-    <p>Giá: <input type="number" step="0.01" th:field="*{price}"/> <span th:if="${#fields.hasErrors('price')}" th:errors="*{price}"></span></p>
-    <button type="submit">Lưu</button>
-</form>
-<a th:href="@{/admin/medicines}">Quay lại danh sách</a>
+
+<div class="container">
+    <div class="card">
+        <div class="header">
+            <h1>Thêm Thuốc Mới</h1>
+            <p>Nhập thông tin thuốc vào hệ thống</p>
+        </div>
+
+        <form th:action="@{/admin/medicines/add}" th:object="${medicineRequest}" method="post">
+
+            <div class="form-group">
+                <label>Tên thuốc</label>
+                <input type="text" th:field="*{name}" placeholder="Ví dụ: Paracetamol 500mg"/>
+                <span class="error" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></span>
+            </div>
+
+            <div class="form-group">
+                <label>Mô tả</label>
+                <input type="text" th:field="*{description}" placeholder="Mô tả chi tiết về thuốc"/>
+                <span class="error" th:if="${#fields.hasErrors('description')}" th:errors="*{description}"></span>
+            </div>
+
+            <div class="form-group">
+                <label>Số lượng tồn kho</label>
+                <input type="number" th:field="*{stockQuantity}" placeholder="0"/>
+                <span class="error" th:if="${#fields.hasErrors('stockQuantity')}" th:errors="*{stockQuantity}"></span>
+            </div>
+
+            <div class="form-group">
+                <label>Đơn vị</label>
+                <input type="text" th:field="*{unit}" placeholder="Ví dụ: Viên, Hộp, Chai"/>
+                <span class="error" th:if="${#fields.hasErrors('unit')}" th:errors="*{unit}"></span>
+            </div>
+
+            <div class="form-group">
+                <label>Giá (VNĐ)</label>
+                <input type="number" step="0.01" th:field="*{price}" placeholder="0.00"/>
+                <span class="error" th:if="${#fields.hasErrors('price')}" th:errors="*{price}"></span>
+            </div>
+
+            <button type="submit" class="btn">Lưu Thuốc</button>
+        </form>
+
+        <div style="text-align:center;">
+            <a th:href="@{/admin/medicines}" class="back-link">← Quay lại danh sách thuốc</a>
+        </div>
+    </div>
+</div>
+
 </body>
 </html>

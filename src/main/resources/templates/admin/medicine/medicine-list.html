@@ -1,37 +1,203 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Danh sách thuốc</title>
+    <meta charset="utf-8">
+    <title>Danh sách Thuốc – Smart Healthcare Platform</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=DM+Serif+Display:ital@0;1&display=swap');
+
+        :root {
+            --teal-700: #0f766e;
+            --teal-600: #0d9488;
+            --teal-500: #14b8a6;
+            --teal-50:  #f0fdfa;
+            --gray-800: #1e293b;
+            --gray-600: #475569;
+            --white: #ffffff;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background: linear-gradient(135deg, #f0fdfa 0%, #e0f2fe 100%);
+            min-height: 100vh;
+            color: var(--gray-800);
+        }
+
+        .container {
+            max-width: 1280px;
+            margin: 40px auto;
+            padding: 0 24px;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+        .header h1 {
+            font-family: 'DM Serif Display', serif;
+            font-size: 2.4rem;
+            color: var(--teal-700);
+        }
+
+        .btn {
+            padding: 12px 24px;
+            background: linear-gradient(135deg, var(--teal-700), var(--teal-500));
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(13,148,136,0.4);
+        }
+
+        .table-container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+            overflow: hidden;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            padding: 16px 20px;
+            text-align: left;
+        }
+        th {
+            background: var(--teal-50);
+            color: var(--teal-700);
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.9rem;
+            letter-spacing: 0.5px;
+        }
+        tr {
+            border-bottom: 1px solid #f1f5f9;
+        }
+        tr:hover {
+            background: #f8fafc;
+        }
+
+        .action-btn {
+            padding: 7px 14px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-size: 0.9rem;
+            margin-right: 6px;
+            color: white;
+        }
+        .edit-btn { background: #10b981; }
+        .delete-btn { background: #ef4444; }
+
+        /* Pagination - Nằm thẳng hàng */
+        .pagination {
+            margin-top: 30px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: nowrap;           /* Giữ thẳng hàng */
+            overflow-x: auto;            /* Cuộn ngang nếu quá nhiều trang */
+            padding: 10px 0;
+        }
+        .pagination a {
+            padding: 10px 16px;
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+            text-decoration: none;
+            color: var(--gray-600);
+            white-space: nowrap;
+            min-width: 44px;
+            text-align: center;
+            transition: all 0.2s;
+        }
+        .pagination a:hover {
+            background: var(--teal-50);
+            color: var(--teal-700);
+        }
+        .pagination a.active {
+            background: var(--teal-600);
+            color: white;
+            border-color: var(--teal-600);
+        }
+    </style>
 </head>
 <body>
-<h1>Danh sách thuốc</h1>
-<a th:href="@{/admin/medicines/add}">Thêm thuốc mới</a>
-<table border="1">
-    <thead>
-    <tr>
-        <th>ID</th>
-        <th>Tên thuốc</th>
-        <th>Mô tả</th>
-        <th>Số lượng</th>
-        <th>Đơn vị</th>
-        <th>Giá</th>
-        <th>Hành động</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr th:each="medicine : ${medicines}">
-        <td th:text="${medicine.medicineId}"></td>
-        <td th:text="${medicine.name}"></td>
-        <td th:text="${medicine.description}"></td>
-        <td th:text="${medicine.stockQuantity}"></td>
-        <td th:text="${medicine.unit}"></td>
-        <td th:text="${medicine.price}"></td>
-        <td>
-            <a th:href="@{'/admin/medicines/edit/' + ${medicine.medicineId}}">Sửa</a> |
-            <a th:href="@{'/admin/medicines/delete/' + ${medicine.medicineId}}">Xóa</a>
-        </td>
-    </tr>
-    </tbody>
-</table>
+
+<div class="container">
+    <div class="header">
+        <h1>Danh sách Thuốc</h1>
+        <a th:href="@{/admin/medicines/add}" class="btn">+ Thêm thuốc mới</a>
+    </div>
+
+    <div class="table-container">
+        <table>
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Tên thuốc</th>
+                <th>Mô tả</th>
+                <th>Số lượng</th>
+                <th>Đơn vị</th>
+                <th>Giá (VNĐ)</th>
+                <th>Hành động</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="medicine : ${medicinePage.content}">
+                <td th:text="${medicine.medicineId}"></td>
+                <td><strong th:text="${medicine.name}"></strong></td>
+                <td th:text="${medicine.description}"></td>
+                <td th:text="${medicine.stockQuantity}"></td>
+                <td th:text="${medicine.unit}"></td>
+                <td th:text="${#numbers.formatDecimal(medicine.price, 0, 0)}"></td>
+                <td>
+                    <a th:href="@{/admin/medicines/edit/{id}(id=${medicine.medicineId})}"
+                       class="action-btn edit-btn">Sửa</a>
+                    <a th:href="@{/admin/medicines/delete/{id}(id=${medicine.medicineId})}"
+                       class="action-btn delete-btn">
+                        Xóa
+                    </a>
+                </td>
+            </tr>
+
+            <tr th:if="${medicinePage.content.isEmpty()}">
+                <td colspan="7" style="text-align:center; padding:80px 20px; color:#64748b;">
+                    <h3>Chưa có thuốc nào trong hệ thống</h3>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Pagination -->
+    <div class="pagination">
+        <a th:if="${currentPage > 0}"
+           th:href="@{/admin/medicines(page=${currentPage - 1})}">← Previous</a>
+
+        <span th:each="i : ${#numbers.sequence(0, medicinePage.totalPages - 1)}">
+            <a th:href="@{/admin/medicines(page=${i})}"
+               th:text="${i + 1}"
+               th:classappend="${i == currentPage} ? 'active' : ''"></a>
+        </span>
+
+        <a th:if="${currentPage < medicinePage.totalPages - 1}"
+           th:href="@{/admin/medicines(page=${currentPage + 1})}">Next →</a>
+    </div>
+</div>
+
 </body>
 </html>
