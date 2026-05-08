@@ -1,5 +1,5 @@
 package re.cntt4.smarthealthcare.constant;
 
 public enum PrescriptionStatus {
-    PENDING, DISPENSED, FAILED
+    PENDING,APPROVED, DISPENSED, FAILED
 }

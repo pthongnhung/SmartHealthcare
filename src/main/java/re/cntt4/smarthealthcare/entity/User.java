@@ -1,22 +1,22 @@
 package re.cntt4.smarthealthcare.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import re.cntt4.smarthealthcare.constant.Role;
+
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "users")
 @AllArgsConstructor
 @NoArgsConstructor
-@Setter
 @Getter
+@Setter
 public class User {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "user_id")   // khóa chính
+    @Column(name = "user_id")
     private Integer userId;
 
     @Column(name = "username", nullable = false, unique = true, length = 50)
@@ -33,11 +33,11 @@ public class User {
     private Boolean isActive = true;
 
     @Column(name = "created_at", nullable = false, updatable = false)
-    private java.time.LocalDateTime createdAt;
+    private LocalDateTime createdAt;
 
     @PrePersist
     public void prePersist() {
-        this.createdAt = java.time.LocalDateTime.now();
+        this.createdAt = LocalDateTime.now();
     }
 
     // 1-1

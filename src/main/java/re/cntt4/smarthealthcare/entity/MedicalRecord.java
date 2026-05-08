@@ -1,17 +1,14 @@
 package re.cntt4.smarthealthcare.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @Entity
 @Table(name = "medical_records")
 @AllArgsConstructor
 @NoArgsConstructor
-@Setter
 @Getter
+@Setter
 public class MedicalRecord {
 
     @Id
@@ -19,10 +16,12 @@ public class MedicalRecord {
     @Column(name = "record_id")
     private Integer recordId;
 
+    // 1-1
     @OneToOne
-    @JoinColumn(name = "appointment_id", unique = true, nullable = false)
+    @JoinColumn(name = "appointment_id", nullable = false, unique = true)
     private Appointment appointment;
 
+    // N-1
     @ManyToOne
     @JoinColumn(name = "doctor_id", nullable = false)
     private Doctor doctor;
@@ -32,7 +31,6 @@ public class MedicalRecord {
 
     @Column(name = "diagnosis")
     private String diagnosis;
-
 
     // 1-1
     @OneToOne(mappedBy = "medicalRecord", cascade = CascadeType.ALL)
