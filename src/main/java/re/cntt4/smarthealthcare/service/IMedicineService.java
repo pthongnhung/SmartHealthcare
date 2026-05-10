@@ -1,8 +1,8 @@
-package re.cntt4.smarthealthcare.service.medicine;
+package re.cntt4.smarthealthcare.service;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import re.cntt4.smarthealthcare.dto.medecine.MedicineRequest;
+import re.cntt4.smarthealthcare.dto.MedicineRequest;
 import re.cntt4.smarthealthcare.entity.Medicine;
 
 import java.util.List;

@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="utf-8">
+  <title>Đặt Lịch Khám – Smart Healthcare Platform</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=DM+Serif+Display:ital@0;1&display=swap');
+
+    :root {
+      --teal-700: #0f766e;
+      --teal-600: #0d9488;
+      --teal-500: #14b8a6;
+      --teal-50:  #f0fdfa;
+      --gray-800: #1e293b;
+      --gray-600: #475569;
+      --white: #ffffff;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: linear-gradient(135deg, #f0fdfa 0%, #e0f2fe 100%);
+      min-height: 100vh;
+      color: var(--gray-800);
+    }
+
+    .container {
+      max-width: 680px;
+      margin: 50px auto;
+      padding: 0 20px;
+    }
+
+    .card {
+      background: white;
+      border-radius: 24px;
+      box-shadow: 0 15px 40px rgba(0,0,0,0.1);
+      padding: 40px 45px;
+    }
+
+    .header {
+      text-align: center;
+      margin-bottom: 35px;
+    }
+    .header h1 {
+      font-family: 'DM Serif Display', serif;
+      font-size: 2.4rem;
+      color: var(--teal-700);
+    }
+
+    .form-group {
+      margin-bottom: 24px;
+    }
+    label {
+      display: block;
+      font-weight: 600;
+      color: var(--gray-800);
+      margin-bottom: 8px;
+      font-size: 0.95rem;
+    }
+    select, input[type="date"], input[type="time"] {
+      width: 100%;
+      padding: 14px 18px;
+      border: 2px solid #e2e8f0;
+      border-radius: 12px;
+      font-size: 1rem;
+      transition: all 0.2s;
+    }
+    select:focus, input:focus {
+      border-color: var(--teal-500);
+      outline: none;
+      box-shadow: 0 0 0 4px rgba(20,184,166,0.15);
+    }
+
+    .error {
+      color: #ef4444;
+      font-size: 0.85rem;
+      margin-top: 6px;
+      min-height: 20px;
+    }
+
+    .btn {
+      width: 100%;
+      padding: 15px;
+      background: linear-gradient(135deg, var(--teal-700), var(--teal-500));
+      color: white;
+      border: none;
+      border-radius: 12px;
+      font-size: 1.05rem;
+      font-weight: 600;
+      cursor: pointer;
+      margin-top: 10px;
+      transition: all 0.3s;
+    }
+    .btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 10px 25px rgba(13,148,136,0.4);
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <div class="card">
+    <div class="header">
+      <h1>Đặt Lịch Khám</h1>
+      <p>Chọn thông tin và đặt lịch nhanh chóng</p>
+    </div>
+
+    <form th:action="@{/patient/appointments/book}" th:object="${appointmentRequest}" method="post" id="appointmentForm" novalidate>
+
+      <!-- Hiển thị lỗi chung -->
+<!--      <div th:if="${error}">-->
+<!--        <p style="color:red" th:text="${error}"></p>-->
+<!--      </div>-->
+
+      <!-- Chọn chuyên khoa -->
+      <div class="form-group">
+        <label for="specialty">Chuyên khoa</label>
+        <select id="specialty" th:field="*{specialtyId}"
+                onchange="location.href='/patient/appointments/specialty/' + this.value">
+          <option value="">-- Chọn chuyên khoa --</option>
+          <option th:each="s : ${specialties}"
+                  th:value="${s.specialtyId}"
+                  th:text="${s.name}"></option>
+        </select>
+        <div class="error" th:if="${#fields.hasErrors('specialtyId')}" th:errors="*{specialtyId}"></div>
+      </div>
+
+      <!-- Chọn bác sĩ -->
+      <div class="form-group">
+        <label for="doctor">Bác sĩ</label>
+        <select id="doctor" th:field="*{doctorId}">
+          <option value="">-- Chọn bác sĩ --</option>
+          <option th:each="d : ${doctors}"
+                  th:value="${d.doctorId}"
+                  th:text="${d.user.profile.fullName}"></option>
+        </select>
+        <div class="error" th:if="${#fields.hasErrors('doctorId')}" th:errors="*{doctorId}"></div>
+      </div>
+
+      <!-- Ngày khám -->
+      <div class="form-group">
+        <label for="date">Ngày khám</label>
+        <input type="date" id="date" th:field="*{appointmentDate}"/>
+        <div class="error" th:if="${#fields.hasErrors('appointmentDate')}" th:errors="*{appointmentDate}"></div>
+      </div>
+
+      <!-- Giờ khám -->
+      <div class="form-group">
+        <label for="time">Giờ khám</label>
+        <input type="time" id="time" th:field="*{appointmentTime}">
+<!--        <div class="error" th:if="${#fields.hasErrors('appointmentTime')}" th:errors="*{appointmentTime}"></div>-->
+        <div th:if="${#fields.hasErrors('appointmentTime')}"
+             th:errors="*{appointmentTime}"
+             style="color:red">
+        </div>
+      </div>
+
+
+      <button type="submit" class="btn">Đặt lịch khám</button>
+    </form>
+  </div>
+</div>
+
+<script>
+  // Tự động ẩn lỗi khi người dùng nhập dữ liệu
+  document.addEventListener("DOMContentLoaded", function() {
+    const form = document.getElementById("appointmentForm");
+    const inputs = form.querySelectorAll("input, select");
+
+    inputs.forEach(input => {
+      input.addEventListener("input", function() {
+        const errorDiv = this.parentElement.querySelector(".error");
+        if (errorDiv) {
+          errorDiv.style.display = "none";
+        }
+      });
+    });
+  });
+</script>
+
+</body>
+</html>

@@ -1,4 +1,4 @@
-package re.cntt4.smarthealthcare.controller.medicine;
+package re.cntt4.smarthealthcare.controller;
 
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
@@ -9,11 +9,9 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
-import re.cntt4.smarthealthcare.dto.medecine.MedicineRequest;
+import re.cntt4.smarthealthcare.dto.MedicineRequest;
 import re.cntt4.smarthealthcare.entity.Medicine;
-import re.cntt4.smarthealthcare.service.medicine.IMedicineService;
-
-import java.util.List;
+import re.cntt4.smarthealthcare.service.IMedicineService;
 
 @Controller
 @RequestMapping("/admin/medicines")

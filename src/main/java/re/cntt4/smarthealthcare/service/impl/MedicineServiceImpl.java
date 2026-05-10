@@ -5,10 +5,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import re.cntt4.smarthealthcare.dto.medecine.MedicineRequest;
+import re.cntt4.smarthealthcare.dto.MedicineRequest;
 import re.cntt4.smarthealthcare.entity.Medicine;
-import re.cntt4.smarthealthcare.repository.medicine.MedicineRepository;
-import re.cntt4.smarthealthcare.service.medicine.IMedicineService;
+import re.cntt4.smarthealthcare.repository.MedicineRepository;
+import re.cntt4.smarthealthcare.service.IMedicineService;
 
 import java.util.List;
 

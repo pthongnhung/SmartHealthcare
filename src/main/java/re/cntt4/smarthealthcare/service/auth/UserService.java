@@ -1,4 +1,4 @@
-package re.cntt4.smarthealthcare.service.authentication;
+package re.cntt4.smarthealthcare.service.auth;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

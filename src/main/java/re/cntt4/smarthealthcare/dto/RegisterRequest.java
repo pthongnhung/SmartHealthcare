@@ -1,4 +1,4 @@
-package re.cntt4.smarthealthcare.dto.authentication;
+package re.cntt4.smarthealthcare.dto;
 
 import jakarta.validation.constraints.*;
 import lombok.Getter;

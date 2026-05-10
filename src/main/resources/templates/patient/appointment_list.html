@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Lịch khám của bạn</title>
+    <style>
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background: #f9fafb;
+            color: #1e293b;
+            margin: 0;
+            padding: 20px;
+        }
+        h2 {
+            color: #0f766e;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: #ffffff;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        th, td {
+            padding: 12px 16px;
+            text-align: left;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        th {
+            background: #0d9488;
+            color: #ffffff;
+            font-weight: 600;
+        }
+        tr:hover {
+            background: #f0fdfa;
+        }
+        .status {
+            font-weight: 600;
+        }
+        .btn-cancel {
+            background: #ef4444;
+            color: #fff;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.9rem;
+        }
+        .btn-cancel:hover {
+            background: #dc2626;
+        }
+    </style>
+</head>
+<body>
+
+<h2>Lịch khám của bạn</h2>
+
+<table>
+    <thead>
+    <tr>
+        <th>Chuyên khoa</th>
+        <th>Bác sĩ</th>
+        <th>Ngày khám</th>
+        <th>Giờ khám</th>
+        <th>Trạng thái</th>
+        <th>Thao tác</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="a : ${appointments}">
+        <td th:text="${a.specialty.name}"></td>
+        <td th:text="${a.doctor.user.profile.fullName}"></td>
+        <td th:text="${a.appointmentDate}"></td>
+        <td th:text="${a.appointmentTime}"></td>
+        <td class="status" th:text="${a.status}"></td>
+        <td>
+            <!-- Nút hủy lịch -->
+            <form th:action="@{/patient/appointments/cancel/{id}(id=${a.appointmentId})}" method="post">
+                <button type="submit" class="btn-cancel">Hủy</button>
+            </form>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+</body>
+</html>

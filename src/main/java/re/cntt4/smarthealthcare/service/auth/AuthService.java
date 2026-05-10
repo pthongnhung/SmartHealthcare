@@ -1,4 +1,4 @@
-package re.cntt4.smarthealthcare.service.authentication;
+package re.cntt4.smarthealthcare.service.auth;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import re.cntt4.smarthealthcare.constant.Gender;
 import re.cntt4.smarthealthcare.constant.Role;
-import re.cntt4.smarthealthcare.dto.authentication.RegisterRequest;
+import re.cntt4.smarthealthcare.dto.RegisterRequest;
 import re.cntt4.smarthealthcare.entity.Patient;
 import re.cntt4.smarthealthcare.entity.User;
 import re.cntt4.smarthealthcare.entity.UserProfile;

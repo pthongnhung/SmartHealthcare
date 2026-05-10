@@ -6,8 +6,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import re.cntt4.smarthealthcare.dto.authentication.RegisterRequest;
-import re.cntt4.smarthealthcare.service.authentication.AuthService;
+import re.cntt4.smarthealthcare.dto.RegisterRequest;
+import re.cntt4.smarthealthcare.service.auth.AuthService;
 import re.cntt4.smarthealthcare.repository.authentication.UserProfileRepository;
 
 @Controller
