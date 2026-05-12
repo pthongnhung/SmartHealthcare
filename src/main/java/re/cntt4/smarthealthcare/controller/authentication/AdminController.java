@@ -6,7 +6,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import re.cntt4.smarthealthcare.entity.UserProfile;
-import re.cntt4.smarthealthcare.repository.authentication.UserProfileRepository;
+import re.cntt4.smarthealthcare.repository.UserProfileRepository;
 
 import java.security.Principal;
 

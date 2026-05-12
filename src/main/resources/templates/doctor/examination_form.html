@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title>Hoàn thành Kết quả Khám – Smart Healthcare Platform</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <style>
+
+        @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=DM+Serif+Display:ital@0;1&display=swap');
+
+        :root {
+            --teal-700: #0f766e;
+            --teal-600: #0d9488;
+            --teal-500: #14b8a6;
+            --teal-50:  #f0fdfa;
+            --gray-800: #1e293b;
+            --gray-600: #475569;
+            --white: #ffffff;
+        }
+
+        *{
+            box-sizing:border-box;
+            margin:0;
+            padding:0;
+        }
+
+        body{
+            font-family:'DM Sans',sans-serif;
+            background:linear-gradient(135deg,#f0fdfa 0%,#e0f2fe 100%);
+            min-height:100vh;
+            color:var(--gray-800);
+        }
+
+        .container{
+            max-width:680px;
+            margin:40px auto;
+            padding:0 20px;
+        }
+
+        .card{
+            background:white;
+            border-radius:24px;
+            box-shadow:0 15px 40px rgba(0,0,0,0.1);
+            padding:35px 40px;
+        }
+
+        .header{
+            text-align:center;
+            margin-bottom:30px;
+        }
+
+        .header h1{
+            font-family:'DM Serif Display',serif;
+            font-size:2.25rem;
+            color:var(--teal-700);
+        }
+
+        .header p{
+            margin-top:8px;
+            color:var(--gray-600);
+        }
+
+        .form-group{
+            margin-bottom:22px;
+        }
+
+        label{
+            display:block;
+            font-weight:600;
+            color:var(--gray-800);
+            margin-bottom:8px;
+            font-size:0.95rem;
+        }
+
+        textarea,
+        select{
+            width:100%;
+            padding:13px 16px;
+            border:2px solid #e2e8f0;
+            border-radius:12px;
+            font-size:1rem;
+            min-height:100px;
+            resize:vertical;
+            transition:0.2s;
+        }
+
+        select{
+            min-height:auto;
+        }
+
+        textarea:focus,
+        select:focus{
+            border-color:var(--teal-500);
+            outline:none;
+            box-shadow:0 0 0 4px rgba(20,184,166,0.15);
+        }
+
+        .input-error{
+            border-color:#ef4444 !important;
+        }
+
+        .error{
+            color:#ef4444;
+            font-size:0.85rem;
+            margin-top:6px;
+        }
+
+        .btn{
+            width:100%;
+            padding:14px;
+            background:linear-gradient(135deg,var(--teal-700),var(--teal-500));
+            color:white;
+            border:none;
+            border-radius:12px;
+            font-size:1.05rem;
+            font-weight:600;
+            cursor:pointer;
+            margin-top:15px;
+            transition:all 0.3s;
+        }
+
+        .btn:hover{
+            transform:translateY(-2px);
+            box-shadow:0 8px 20px rgba(13,148,136,0.4);
+        }
+
+        .medicine-list{
+            min-height:50px;
+            padding:10px;
+            background:#f8fafc;
+            border-radius:12px;
+            margin-top:8px;
+        }
+
+        .medicine-item{
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+            background:white;
+            padding:10px 14px;
+            margin-bottom:8px;
+            border-radius:10px;
+            border:1px solid #e2e8f0;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+    <div class="card">
+
+        <div class="header">
+            <h1>Hoàn thành Kết quả Khám</h1>
+            <p>
+                Ghi nhận triệu chứng, chẩn đoán và kê đơn thuốc
+            </p>
+        </div>
+
+        <form th:action="@{/doctor/examination/complete}"
+              th:object="${examinationRequest}"
+              method="post"
+              id="examinationForm">
+
+            <div class="alert alert-danger" th:if="${#fields.hasErrors('*')}">
+                <ul>
+                    <li th:each="err : ${#fields.errors('*')}" th:text="${err}"></li>
+                </ul>
+            </div>
+            <input type="hidden"
+                   th:field="*{appointmentId}" />
+
+            <!-- TRIỆU CHỨNG -->
+
+            <div class="form-group">
+
+                <label>Triệu chứng</label>
+
+                <textarea th:field="*{symptoms}"
+                          placeholder="Mô tả triệu chứng của bệnh nhân..."
+                          th:classappend="${#fields.hasErrors('symptoms')} ? 'input-error' : ''">
+                </textarea>
+
+                <div class="error"
+                     th:if="${#fields.hasErrors('symptoms')}"
+                     th:errors="*{symptoms}">
+                </div>
+
+            </div>
+
+            <!-- CHẨN ĐOÁN -->
+
+            <div class="form-group">
+
+                <label>Chẩn đoán</label>
+
+                <textarea th:field="*{diagnosis}"
+                          placeholder="Chẩn đoán của bác sĩ..."
+                          th:classappend="${#fields.hasErrors('diagnosis')} ? 'input-error' : ''">
+                </textarea>
+
+                <div class="error"
+                     th:if="${#fields.hasErrors('diagnosis')}"
+                     th:errors="*{diagnosis}">
+                </div>
+
+            </div>
+
+            <!-- THÊM THUỐC -->
+
+            <div class="form-group">
+
+                <label>Thêm thuốc</label>
+
+                <div style="display:flex;gap:10px;">
+
+                    <select id="medicineSelect"
+                            style="flex:1;">
+
+                        <option value="">
+                            -- Chọn thuốc --
+                        </option>
+
+                        <option th:each="m : ${medicines}"
+                                th:value="${m.medicineId}"
+                                th:text="${m.name}">
+                        </option>
+
+                    </select>
+
+                    <button type="button"
+                            class="btn"
+                            onclick="addMedicine()"
+                            style="width:auto;padding:0 24px;">
+
+                        Thêm
+
+                    </button>
+
+                </div>
+
+                <div class="error medicine-error"
+                     th:if="${#fields.hasErrors('medicineIds')}"
+                     th:errors="*{medicineIds}">
+                </div>
+
+            </div>
+
+            <!-- DANH SÁCH THUỐC -->
+
+            <div class="form-group">
+
+                <label>Thuốc đã kê</label>
+
+                <ul id="selectedMedicines"
+                    class="medicine-list">
+                </ul>
+
+                <input type="hidden"
+                       th:field="*{medicineIds}"
+                       id="medicineIds" />
+
+            </div>
+
+            <button type="submit"
+                    class="btn">
+
+                Lưu kết quả khám
+
+            </button>
+
+        </form>
+
+    </div>
+
+</div>
+
+<script>
+
+    const selectedMedicines =
+        document.getElementById('selectedMedicines');
+
+    const medicineIdsInput =
+        document.getElementById('medicineIds');
+
+    function addMedicine() {
+
+        const select =
+            document.getElementById('medicineSelect');
+
+        const value =
+            select.value;
+
+        const text =
+            select.options[select.selectedIndex].text;
+
+        if (!value ||
+            medicineIdsInput.value.split(',').includes(value)) {
+            return;
+        }
+
+        medicineIdsInput.value =
+            medicineIdsInput.value
+                ? medicineIdsInput.value + ',' + value
+                : value;
+
+        const li =
+            document.createElement('li');
+
+        li.className = 'medicine-item';
+
+        li.innerHTML = `
+            ${text}
+
+            <button type="button"
+                    class="btn"
+                    style="background:#ef4444;
+                           padding:4px 10px;
+                           font-size:0.9rem;
+                           width:auto;
+                           margin-top:0;"
+                    onclick="removeMedicine(this, '${value}')">
+
+                Xóa
+
+            </button>
+        `;
+
+        selectedMedicines.appendChild(li);
+
+        hideMedicineError();
+    }
+
+    function removeMedicine(btn, value) {
+
+        const ids =
+            medicineIdsInput.value
+                .split(',')
+                .filter(id => id !== value);
+
+        medicineIdsInput.value =
+            ids.join(',');
+
+        btn.parentElement.remove();
+    }
+
+    // =========================
+    // ẨN LỖI KHI NHẬP LẠI
+    // =========================
+
+    document.addEventListener("DOMContentLoaded", function () {
+
+        const textareas =
+            document.querySelectorAll("textarea");
+
+        textareas.forEach(textarea => {
+
+            textarea.addEventListener("input", function () {
+
+                const error =
+                    this.parentElement.querySelector(".error");
+
+                if(error){
+                    error.style.display = "none";
+                }
+
+                this.classList.remove("input-error");
+            });
+
+        });
+
+        const medicineSelect =
+            document.getElementById("medicineSelect");
+
+        medicineSelect.addEventListener("change", function () {
+
+            hideMedicineError();
+
+        });
+
+    });
+
+    function hideMedicineError() {
+
+        const medicineError =
+            document.querySelector(".medicine-error");
+
+        if(medicineError){
+            medicineError.style.display = "none";
+        }
+    }
+
+</script>
+
+</body>
+</html>
+

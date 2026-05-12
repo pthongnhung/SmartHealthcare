@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import re.cntt4.smarthealthcare.entity.User;
 import re.cntt4.smarthealthcare.entity.UserProfile;
-import re.cntt4.smarthealthcare.repository.authentication.UserProfileRepository;
+import re.cntt4.smarthealthcare.repository.UserProfileRepository;
 
 @Service
 public class UserService {

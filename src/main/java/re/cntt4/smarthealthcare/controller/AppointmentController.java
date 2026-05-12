@@ -7,8 +7,8 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import re.cntt4.smarthealthcare.dto.appointment.AppointmentRequest;
-import re.cntt4.smarthealthcare.repository.authentication.DoctorRepository;
-import re.cntt4.smarthealthcare.repository.authentication.SpecialtyRepository;
+import re.cntt4.smarthealthcare.repository.DoctorRepository;
+import re.cntt4.smarthealthcare.repository.SpecialtyRepository;
 import re.cntt4.smarthealthcare.service.IAppointmentService;
 
 @Controller
@@ -54,7 +54,6 @@ public class AppointmentController {
             return "patient/appointment_form";
         }
         try {
-            // ✅ Lấy email từ user đăng nhập
             String email = principal.getName();
             Integer patientId = appointmentService.findPatientIdByEmail(email);
 

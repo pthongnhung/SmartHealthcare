@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title>Quản lý Cấp phát Thuốc – Smart Healthcare Platform</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=DM+Serif+Display:ital@0;1&display=swap');
+
+        :root {
+            --teal-700: #0f766e;
+            --teal-600: #0d9488;
+            --teal-500: #14b8a6;
+            --teal-50:  #f0fdfa;
+            --gray-800: #1e293b;
+            --gray-600: #475569;
+            --white: #ffffff;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background: linear-gradient(135deg, #f0fdfa 0%, #e0f2fe 100%);
+            min-height: 100vh;
+            color: var(--gray-800);
+        }
+
+        .container {
+            max-width: 1280px;
+            margin: 40px auto;
+            padding: 0 24px;
+        }
+
+        .header {
+            margin-bottom: 30px;
+        }
+        .header h1 {
+            font-family: 'DM Serif Display', serif;
+            font-size: 2.4rem;
+            color: var(--teal-700);
+        }
+
+        .table-container {
+            background: white;
+            border-radius: 24px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+            overflow: hidden;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            padding: 18px 20px;
+            text-align: left;
+        }
+        th {
+            background: var(--teal-50);
+            color: var(--teal-700);
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.9rem;
+            letter-spacing: 0.5px;
+        }
+        tr {
+            border-bottom: 1px solid #f1f5f9;
+        }
+        tr:hover {
+            background: #f8fafc;
+        }
+
+        .status {
+            padding: 6px 16px;
+            border-radius: 9999px;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+        .pending {
+            background: #fef3c7;
+            color: #d97706;
+        }
+        .dispensed {
+            background: #d1fae5;
+            color: #10b981;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border-radius: 12px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+        .btn-success {
+            background: linear-gradient(135deg, #10b981, #34d399);
+            color: white;
+        }
+        .btn-success:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(16,185,129,0.4);
+        }
+
+        .no-data {
+            text-align: center;
+            padding: 80px 20px;
+            color: var(--gray-600);
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="header">
+        <h1>Danh sách đơn thuốc</h1>
+    </div>
+
+    <div class="table-container">
+        <table>
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Bệnh nhân</th>
+                <th>Trạng thái</th>
+                <th>Thuốc</th>
+                <th>Thao tác</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="p : ${prescriptions}">
+                <td th:text="${p.prescriptionId}"></td>
+                <td th:text="${p.patient.user.profile.fullName}"></td>
+                <td>
+                    <span th:if="${p.status.name() == 'PENDING'}" class="status pending">Chờ cấp phát</span>
+                    <span th:if="${p.status.name() == 'DISPENSED'}" class="status dispensed">Đã cấp phát</span>
+                </td>
+                <td>
+                    <ul style="margin:0; padding-left:0; list-style:none;">
+                        <li th:each="d : ${p.details}" style="margin-bottom:4px;">
+                            <strong th:text="${d.medicine.name}"></strong>
+                            - SL: <span th:text="${d.quantity}"></span>
+                        </li>
+                    </ul>
+                </td>
+                <td>
+                    <form th:if="${p.status.name() == 'PENDING'}"
+                          th:action="@{/admin/prescriptions/dispense/{id}(id=${p.prescriptionId})}"
+                          method="post" style="display:inline;">
+                        <button type="submit" class="btn btn-success">Cấp phát thuốc</button>
+                    </form>
+                    <span th:if="${p.status.name() == 'DISPENSED'}"
+                          class="text-success fw-bold">Đã cấp phát</span>
+                </td>
+            </tr>
+
+            <tr th:if="${prescriptions.isEmpty()}">
+                <td colspan="5" class="no-data">
+                    <h3>Chưa có đơn thuốc nào cần cấp phát</h3>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Thông báo -->
+    <div th:if="${success}" class="alert alert-success mt-4" th:text="${success}"></div>
+    <div th:if="${error}" class="alert alert-danger mt-4" th:text="${error}"></div>
+</div>
+
+</body>
+</html>

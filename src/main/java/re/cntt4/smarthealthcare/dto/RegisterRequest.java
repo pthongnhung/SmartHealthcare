@@ -38,6 +38,7 @@ public class RegisterRequest {
     @Past(message = "Ngày sinh phải trong quá khứ")
     private java.time.LocalDate dob;
 
+    @NotBlank(message = "Gioi tinh khong duoc de trong")
     private String gender; // MALE / FEMALE / OTHER
 
     @Size(max = 255, message = "Địa chỉ tối đa 255 ký tự")

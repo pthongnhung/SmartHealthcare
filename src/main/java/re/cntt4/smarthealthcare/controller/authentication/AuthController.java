@@ -8,7 +8,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import re.cntt4.smarthealthcare.dto.RegisterRequest;
 import re.cntt4.smarthealthcare.service.auth.AuthService;
-import re.cntt4.smarthealthcare.repository.authentication.UserProfileRepository;
+import re.cntt4.smarthealthcare.repository.UserProfileRepository;
 
 @Controller
 public class AuthController {

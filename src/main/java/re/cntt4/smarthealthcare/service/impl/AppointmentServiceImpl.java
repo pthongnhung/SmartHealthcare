@@ -8,9 +8,9 @@ import re.cntt4.smarthealthcare.constant.AppointmentStatus;
 import re.cntt4.smarthealthcare.entity.Appointment;
 import re.cntt4.smarthealthcare.entity.Doctor;
 import re.cntt4.smarthealthcare.entity.Patient;
-import re.cntt4.smarthealthcare.repository.authentication.AppointmentRepository;
-import re.cntt4.smarthealthcare.repository.authentication.DoctorRepository;
-import re.cntt4.smarthealthcare.repository.authentication.PatientRepository;
+import re.cntt4.smarthealthcare.repository.AppointmentRepository;
+import re.cntt4.smarthealthcare.repository.DoctorRepository;
+import re.cntt4.smarthealthcare.repository.PatientRepository;
 import re.cntt4.smarthealthcare.service.IAppointmentService;
 
 import java.time.LocalDate;

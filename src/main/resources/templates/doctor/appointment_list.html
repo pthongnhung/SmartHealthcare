@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title>Danh sách Lịch Hẹn – Smart Healthcare Platform</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=DM+Serif+Display:ital@0;1&display=swap');
+
+        :root {
+            --teal-700: #0f766e;
+            --teal-600: #0d9488;
+            --teal-500: #14b8a6;
+            --teal-50:  #f0fdfa;
+            --gray-800: #1e293b;
+            --gray-600: #475569;
+            --white: #ffffff;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background: linear-gradient(135deg, #f0fdfa 0%, #e0f2fe 100%);
+            min-height: 100vh;
+            color: var(--gray-800);
+        }
+
+        .container {
+            max-width: 1280px;
+            margin: 40px auto;
+            padding: 0 24px;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+        .header h1 {
+            font-family: 'DM Serif Display', serif;
+            font-size: 2.4rem;
+            color: var(--teal-700);
+        }
+
+        .table-container {
+            background: white;
+            border-radius: 24px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+            overflow: hidden;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            padding: 18px 20px;
+            text-align: left;
+        }
+        th {
+            background: var(--teal-50);
+            color: var(--teal-700);
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.9rem;
+            letter-spacing: 0.5px;
+        }
+        tr {
+            border-bottom: 1px solid #f1f5f9;
+        }
+        tr:hover {
+            background: #f8fafc;
+        }
+
+        .status {
+            padding: 6px 14px;
+            border-radius: 9999px;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+        .status-waiting {
+            background: #fef3c7;
+            color: #d97706;
+        }
+
+        .btn {
+            padding: 8px 18px;
+            background: linear-gradient(135deg, var(--teal-700), var(--teal-500));
+            color: white;
+            border-radius: 10px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(13,148,136,0.4);
+        }
+
+        .no-data {
+            text-align: center;
+            padding: 80px 20px;
+            color: var(--gray-600);
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="header">
+        <h1>Danh sách lịch hẹn chờ khám</h1>
+    </div>
+
+    <div class="table-container">
+        <table>
+            <thead>
+            <tr>
+                <th>Bệnh nhân</th>
+                <th>Ngày khám</th>
+                <th>Giờ khám</th>
+                <th>Trạng thái</th>
+                <th>Hành động</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="a : ${appointments}">
+                <td th:text="${a.patient.user.profile.fullName}"></td>
+                <td th:text="${a.appointmentDate}"></td>
+                <td th:text="${a.appointmentTime}"></td>
+                <td>
+                    <span class="status status-waiting" th:text="${a.status}"></span>
+                </td>
+                <td>
+                    <a th:href="@{/doctor/examination/{id}(id=${a.appointmentId})}"
+                       class="btn">Khám bệnh</a>
+                </td>
+            </tr>
+
+            <tr th:if="${appointments.isEmpty()}">
+                <td colspan="5" class="no-data">
+                    <h3>Chưa có lịch hẹn nào chờ khám</h3>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+</body>
+</html>

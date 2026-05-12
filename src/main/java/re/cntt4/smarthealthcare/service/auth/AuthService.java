@@ -10,9 +10,9 @@ import re.cntt4.smarthealthcare.dto.RegisterRequest;
 import re.cntt4.smarthealthcare.entity.Patient;
 import re.cntt4.smarthealthcare.entity.User;
 import re.cntt4.smarthealthcare.entity.UserProfile;
-import re.cntt4.smarthealthcare.repository.authentication.PatientRepository;
-import re.cntt4.smarthealthcare.repository.authentication.UserProfileRepository;
-import re.cntt4.smarthealthcare.repository.authentication.UserRepository;
+import re.cntt4.smarthealthcare.repository.PatientRepository;
+import re.cntt4.smarthealthcare.repository.UserProfileRepository;
+import re.cntt4.smarthealthcare.repository.UserRepository;
 
 @Service
 public class AuthService {

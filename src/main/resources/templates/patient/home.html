@@ -29,13 +29,12 @@
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; }
+
         body {
             font-family: 'DM Sans', sans-serif;
             background: var(--gray-50);
             min-height: 100vh;
             color: var(--gray-800);
-            position: relative;
-            overflow-x: hidden;
         }
 
         /* Background */
@@ -71,13 +70,6 @@
             color: var(--teal-700);
             font-weight: 600;
         }
-        .nav-actions a {
-            font-weight: 500;
-            padding: 10px 20px;
-            border-radius: 12px;
-            text-decoration: none;
-            transition: all 0.3s;
-        }
 
         /* Main Content */
         .container {
@@ -100,10 +92,10 @@
             color: var(--gray-600);
         }
 
-        /* Cards */
+        /* === 3 THẺ CÙNG 1 HÀNG === */
         .dashboard-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+            grid-template-columns: repeat(3, 1fr);   /* Buộc 3 cột */
             gap: 24px;
         }
 
@@ -112,21 +104,12 @@
             border-radius: 24px;
             padding: 32px 28px;
             box-shadow: var(--shadow);
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: all 0.3s;
             border: 1px solid var(--gray-100);
-            position: relative;
-            overflow: hidden;
         }
         .card:hover {
             transform: translateY(-8px);
             box-shadow: 0 35px 60px -15px rgb(4 47 46 / 0.2);
-        }
-        .card::before {
-            content: '';
-            position: absolute;
-            top: 0; left: 0; right: 0;
-            height: 4px;
-            background: linear-gradient(90deg, var(--teal-500), var(--teal-400));
         }
 
         .card-icon {
@@ -160,15 +143,11 @@
             transition: all 0.3s;
             border: none;
             cursor: pointer;
+            width: 100%;
         }
         .btn-primary {
             background: linear-gradient(135deg, var(--teal-700), var(--teal-500));
             color: white;
-            box-shadow: 0 4px 15px rgba(13,148,136,0.3);
-        }
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(13,148,136,0.4);
         }
         .btn-success {
             background: linear-gradient(135deg, #10b981, #34d399);
@@ -179,11 +158,16 @@
             color: white;
         }
 
-        .footer-text {
-            margin-top: 60px;
-            text-align: center;
-            font-size: 0.8rem;
-            color: var(--gray-400);
+        /* Responsive */
+        @media (max-width: 992px) {
+            .dashboard-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        @media (max-width: 600px) {
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
         }
     </style>
 </head>
@@ -195,7 +179,7 @@
 
 <!-- Navbar -->
 <nav class="navbar">
-    <div class="container" style="display:flex; justify-content:space-between; align-items:center; max-width:1280px; margin:0 auto;">
+    <div style="max-width:1280px; margin:0 auto; display:flex; justify-content:space-between; align-items:center; width:100%;">
         <a class="nav-brand" th:href="@{/home}">SmartHealth</a>
         <div class="nav-actions d-flex align-items-center">
             <a th:href="@{/profile}" class="btn btn-info mr-3">Hồ sơ cá nhân</a>
@@ -211,10 +195,9 @@
     </div>
 
     <div class="dashboard-grid">
-        <!-- Card 1 -->
         <div class="card">
             <div class="card-icon">
-                <svg width="32" height="32" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+                <svg width="32" height="32" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
                     <path d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2"/>
                 </svg>
             </div>
@@ -223,22 +206,20 @@
             <a th:href="@{/patient/appointments}" class="btn btn-primary">Thực hiện ngay</a>
         </div>
 
-        <!-- Card 2 -->
         <div class="card">
             <div class="card-icon">
-                <svg width="32" height="32" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+                <svg width="32" height="32" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
                     <path d="M19 11H5m14 0a2 2 0 0 1 2 2v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-6a2 2 0 0 1 2-2m14 0V9a2 2 0 0 0-2-2M5 11V9a2 2 0 0 1 2-2m0 0V5a2 2 0 0 1 2-2"/>
                 </svg>
             </div>
             <h5>Lịch sử bệnh án</h5>
             <p class="text-muted">Xem lại toàn bộ hồ sơ khám chữa bệnh của bạn</p>
-            <a th:href="@{/patient/records}" class="btn btn-success">Xem lịch sử</a>
+            <a th:href="@{/patient/history}" class="btn btn-success">Xem lịch sử</a>
         </div>
 
-        <!-- Card 3 -->
         <div class="card">
             <div class="card-icon">
-                <svg width="32" height="32" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+                <svg width="32" height="32" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
                     <path d="M12 8v4l3 3m6-3a9 9 0 0 1-18 0 9 9 0 0 1 18 0z"/>
                 </svg>
             </div>
@@ -246,10 +227,6 @@
             <p class="text-muted">Xem và quản lý các lịch hẹn đã đặt</p>
             <a th:href="@{/patient/appointments/view}" class="btn btn-info">Xem lịch hẹn</a>
         </div>
-    </div>
-
-    <div class="footer-text">
-        Smart Healthcare Platform • Tuân thủ quy định Bộ Y tế Việt Nam • Dữ liệu được bảo mật
     </div>
 </div>
 

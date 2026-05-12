@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title>Lịch sử Bệnh án – Smart Healthcare Platform</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=DM+Serif+Display:ital@0;1&display=swap');
+
+        :root {
+            --teal-700: #0f766e;
+            --teal-600: #0d9488;
+            --teal-500: #14b8a6;
+            --teal-50:  #f0fdfa;
+            --gray-800: #1e293b;
+            --gray-600: #475569;
+            --white: #ffffff;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background: linear-gradient(135deg, #f0fdfa 0%, #e0f2fe 100%);
+            min-height: 100vh;
+            color: var(--gray-800);
+        }
+
+        .container {
+            max-width: 1280px;
+            margin: 40px auto;
+            padding: 0 24px;
+        }
+
+        .header {
+            margin-bottom: 30px;
+        }
+        .header h1 {
+            font-family: 'DM Serif Display', serif;
+            font-size: 2.4rem;
+            color: var(--teal-700);
+        }
+
+        .table-container {
+            background: white;
+            border-radius: 24px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+            overflow: hidden;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            padding: 18px 20px;
+            text-align: left;
+        }
+        th {
+            background: var(--teal-50);
+            color: var(--teal-700);
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.9rem;
+            letter-spacing: 0.5px;
+        }
+        tr {
+            border-bottom: 1px solid #f1f5f9;
+        }
+        tr:hover {
+            background: #f8fafc;
+        }
+
+        .medicine-list {
+            margin: 0;
+            padding-left: 0;
+            list-style: none;
+        }
+        .medicine-list li {
+            margin-bottom: 4px;
+            color: var(--gray-800);
+        }
+
+        .no-data {
+            text-align: center;
+            padding: 80px 20px;
+            color: var(--gray-600);
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="header">
+        <h1>Lịch sử Bệnh án</h1>
+    </div>
+
+    <div class="table-container">
+        <table>
+            <thead>
+            <tr>
+                <th>Ngày khám</th>
+                <th>Bác sĩ</th>
+                <th>Chẩn đoán</th>
+                <th>Triệu chứng</th>
+                <th>Thuốc kê</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="h : ${history}">
+                <td th:text="${h.appointmentDate}"></td>
+                <td th:text="${h.doctorName}"></td>
+                <td th:text="${h.diagnosis}"></td>
+                <td th:text="${h.symptoms}"></td>
+                <td>
+                    <ul class="medicine-list">
+                        <li th:each="m : ${h.medicines}">
+                            <strong th:text="${m.medicineName}"></strong>
+                            (<span th:text="${m.quantity}"></span> -
+                            <span th:text="${m.dosage}"></span>)
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+
+            <tr th:if="${history.isEmpty()}">
+                <td colspan="5" class="no-data">
+                    <h3>Bạn chưa có lịch sử khám bệnh nào</h3>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+</body>
+</html>

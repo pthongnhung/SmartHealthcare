@@ -36,6 +36,9 @@ public class Patient {
     // 1-N
     @OneToMany(mappedBy = "patient")
     private List<Appointment> appointments;
+    // 1-N với Prescription
+    @OneToMany(mappedBy = "patient", cascade = CascadeType.ALL)
+    private List<Prescription> prescriptions;
 
     @PrePersist
     public void prePersist() {
