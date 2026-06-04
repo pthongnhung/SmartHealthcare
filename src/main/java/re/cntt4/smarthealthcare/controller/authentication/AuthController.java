@@ -33,20 +33,22 @@ public class AuthController {
         return "register";
     }
 
+
+
+//    Đăng ký
     @PostMapping("/register")
     public String register(
             @Valid @ModelAttribute("registerRequest") RegisterRequest req,
             BindingResult result
     ) {
-
-        // check email trùng
         if (profileRepository.findByEmail(req.getEmail()).isPresent()) {
-            result.rejectValue("email", "error.email", "Email đã tồn tại");
+            result.rejectValue("email", "error.email", "Loi");
         }
 
         if (result.hasErrors()) {
             return "register";
         }
+
 
         authService.register(req);
 
